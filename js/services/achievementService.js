@@ -1,1 +1,1 @@
-export const cardCatalog={circle:{name:'円',description:'中心から同じ長さにある点を結んだ形'},sector:{name:'おうぎ形',description:'円を2本の半径で切り取った形'},ring:{name:'ドーナツ型',description:'大きい円から小さい円を引いた形'},leaf:{name:'葉っぱ型',description:'おうぎ形の重なりとして見られる形'},flower:{name:'花びら型',description:'同じ部分を見つけると簡単になる形'}};
+export const cardCatalog={circle:{name:'円',description:'中心から同じ長さにある点を結んだ形'},sector:{name:'おうぎ形',description:'円を2本の半径で切り取った形'},ring:{name:'ドーナツ型',description:'大きい円から小さい円を引いた形'},leaf:{name:'葉っぱ型',description:'4分円から三角形を引いた同じ形2つで考えられる'},magatama:{name:'まがたま型',description:'大きな半円に半円を足し、くぼみの半円を引く形'}};

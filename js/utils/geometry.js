@@ -11,3 +11,5 @@ export const diameterFromCircumference=c=>c/PI;
 export const ringArea=(outer,inner)=>circleArea(outer)-circleArea(inner);
 export const triangleArea=(base,height)=>base*height/2;
 export const squareArea=side=>side*side;
+export const semicircleAreaFromDiameter=diameter=>circleArea(diameter/2)/2;
+export const magatamaArea=(smallDiameter,largeDiameter)=>semicircleAreaFromDiameter(smallDiameter+largeDiameter)+semicircleAreaFromDiameter(largeDiameter)-semicircleAreaFromDiameter(smallDiameter);

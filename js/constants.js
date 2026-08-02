@@ -9,4 +9,4 @@ export const STRATEGIES = {
   derive: '足りない長さを先に求める'
 };
 export const DEFAULT_SETTINGS = {sound:false,motion:'normal',helpOpen:false,alwaysClassify:true,furigana:true,fontSize:'normal'};
-export const STAGE_NAMES = ['円の基本','半径と直径','逆算','円の割合','中心角とおうぎ形','弧の長さ','引き算図形','組み合わせた図形','文章題','総合チャレンジ'];
+export const STAGE_NAMES = ['円の基本','半径と直径','逆算','おうぎ形','中心角とおうぎ形','弧の長さ','引き算図形','組み合わせた図形','文章題','総合チャレンジ'];
