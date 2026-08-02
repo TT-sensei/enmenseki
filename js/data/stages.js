@@ -1,0 +1,1 @@
+import{STAGE_NAMES}from'../constants.js';export const stages=STAGE_NAMES.map((name,i)=>({id:i+1,name,description:['半径から面積を求める','直径を半径に直す','面積や円周から逆に考える','円の何分のいくつか','中心角と割合をつなぐ','弧とおうぎ形をつなぐ','大きい面積から引く','重なりや同じ形を見抜く','場面から必要な計算を選ぶ','10問・20問・連続コース'][i]}));

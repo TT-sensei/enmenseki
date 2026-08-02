@@ -1,0 +1,2 @@
+import{randomItem}from'../utils/math.js';import{ringArea}from'../utils/geometry.js';import{makeProblem}from'../data/problemFactory.js';
+export function generateCompositeProblem(){const [o,n]=randomItem([[6,2],[8,4],[10,6],[12,8],[15,10]]);return makeProblem({id:`gen-ring-${Date.now()}`,stageId:7,type:'ring',title:'ランダム：ドーナツ型',instruction:'色のついた部分の面積を求めよう。',diagram:{kind:'ring',outerRadius:o,innerRadius:n},values:{outerRadius:o,innerRadius:n},validStrategies:['subtract'],expression:`${o}×${o}×3.14-${n}×${n}×3.14`,answer:ringArea(o,n),tags:['自動生成','引き算']})}

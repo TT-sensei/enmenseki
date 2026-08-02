@@ -1,0 +1,6 @@
+import{sectorArea}from'../utils/geometry.js';import{angleFraction}from'../utils/fractions.js';import{makeProblem}from'./problemFactory.js';
+const fractions=[[6,180],[8,90],[9,120],[12,60],[10,45],[8,135],[5,270],[10,72],[12,240],[10,216]];
+const stage4=fractions.map(([r,a],i)=>{const f=angleFraction(a);return makeProblem({id:`fraction-${i+1}`,stageId:4,difficulty:2,type:'circle-fraction',title:'円の割合',instruction:`半径${r}cmの円の、${f.denominator}分の${f.numerator}の面積を求めよう。`,diagram:{kind:'sector',radius:r,angle:a},values:{radius:r,angle:a,fraction:f},validStrategies:['fraction','whole'],expression:`${r}×${r}×3.14×${f.numerator}÷${f.denominator}`,answer:sectorArea(r,a),tags:['割合','分数']} )});
+const angles=[30,45,60,90,120,135,180,216,240,270];
+const stage5=angles.map((a,i)=>{const r=[6,8,9,10,12][i%5];return makeProblem({id:`sector-${i+1}`,stageId:5,difficulty:i<4?2:3,type:'sector-angle',title:'中心角とおうぎ形',instruction:`半径${r}cm、中心角${a}°のおうぎ形の面積を求めよう。`,diagram:{kind:'sector',radius:r,angle:a},values:{radius:r,angle:a},validStrategies:['fraction','whole'],expression:`${r}×${r}×3.14×${a}÷360`,answer:sectorArea(r,a),tags:['おうぎ形','中心角','割合']})});
+export const sectorProblems=[...stage4,...stage5];
