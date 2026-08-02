@@ -1,0 +1,2 @@
+import{randomItem}from'../utils/math.js';import{circleArea}from'../utils/geometry.js';import{makeProblem}from'../data/problemFactory.js';
+export function generateReverseProblem(){const r=randomItem([2,3,4,5,6,8,10]);return makeProblem({id:`gen-reverse-${Date.now()}`,stageId:3,type:'reverse-area',title:'ランダム：半径を逆算',instruction:`面積${circleArea(r)}cm²の円の半径を求めよう。`,diagram:{kind:'circle',radius:'?'},values:{area:circleArea(r)},validStrategies:['derive'],expression:`${circleArea(r)}÷3.14`,answer:r,unit:'cm',tags:['自動生成','逆算']})}

@@ -1,0 +1,13 @@
+import {PI} from '../constants.js';
+export const circleArea=r=>r*r*PI;
+export const circumferenceFromRadius=r=>2*r*PI;
+export const circumferenceFromDiameter=d=>d*PI;
+export const sectorArea=(r,angle)=>circleArea(r)*angle/360;
+export const arcLength=(r,angle)=>circumferenceFromRadius(r)*angle/360;
+export const angleFromArc=(r,arc)=>arc/circumferenceFromRadius(r)*360;
+export const sectorAreaFromArc=(r,arc)=>r*arc/2;
+export const radiusFromArea=area=>Math.sqrt(area/PI);
+export const diameterFromCircumference=c=>c/PI;
+export const ringArea=(outer,inner)=>circleArea(outer)-circleArea(inner);
+export const triangleArea=(base,height)=>base*height/2;
+export const squareArea=side=>side*side;

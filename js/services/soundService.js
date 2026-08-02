@@ -1,0 +1,1 @@
+let context;export function playTone(enabled,good=true){if(!enabled)return;context||=new AudioContext();const o=context.createOscillator(),g=context.createGain();o.frequency.value=good?660:240;g.gain.value=.045;o.connect(g).connect(context.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,context.currentTime+.18);o.stop(context.currentTime+.2)}

@@ -1,0 +1,1 @@
+export const progressBar=(value,label='進み具合')=>`<div><div class="toolbar"><span>${label}</span><strong>${Math.round(value)}%</strong></div><div class="progress-track" role="progressbar" aria-label="${label}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(value)}"><div class="progress-fill" style="width:${Math.min(100,value)}%"></div></div></div>`;

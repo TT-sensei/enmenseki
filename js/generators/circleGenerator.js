@@ -1,0 +1,2 @@
+import{randomItem}from'../utils/math.js';import{circleArea}from'../utils/geometry.js';import{makeProblem}from'../data/problemFactory.js';
+export function generateCircleProblem(){const r=randomItem([2,3,4,5,6,7,8,9,10,12,15,20]);return makeProblem({id:`gen-circle-${Date.now()}`,stageId:1,type:'circle-area',title:'ランダム：円の面積',instruction:`半径${r}cmの円の面積を求めよう。`,diagram:{kind:'circle',radius:r},values:{radius:r},validStrategies:['whole'],expression:`${r}×${r}×3.14`,answer:circleArea(r),tags:['自動生成','円']})}
