@@ -15,6 +15,7 @@ import { toast } from '../components/toast.js';
 const valueLabels = {
   radius: '半径', diameter: '直径', angle: '中心角', arc: '弧の長さ',
   side: '一辺', outerRadius: '外側の半径', innerRadius: '内側の半径',
+  smallDiameter: 'くぼみの直径', largeDiameter: 'ふくらみの直径', totalDiameter: '全体の直径',
   area: '面積', circumference: '円周'
 };
 
