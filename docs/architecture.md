@@ -12,7 +12,9 @@
 
 ## ルーティング
 
-`#home`、`#concept/circle`、`#concept/sector`、`#classify`、`#stages`、`#practice/:stageId`、`#challenge`、`#result/:stageId`、`#collection`、`#settings`、`#test`を使用します。静的なGitHub Pagesでも再読み込みとブラウザの戻る操作が働きます。
+`#home`、`#play/pizza`、`#play/cake`、`#play/rescue`、`#concept/circle`、`#concept/sector`、`#classify`、`#stages`、`#practice/:stageId`、`#challenge`、`#result/:stageId`、`#collection`、`#settings`、`#test`を使用します。静的なGitHub Pagesでも再読み込みとブラウザの戻る操作が働きます。
+
+操作中心の3画面は、それぞれの画面内で小さな状態だけを管理します。完了時のかけらは`islandService.js`を通して保存し、詳しい問題の計算・判定ロジックとは分離しています。
 
 ## 式の安全性
 

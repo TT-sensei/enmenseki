@@ -1,3 +1,45 @@
-import{stages}from'../data/stages.js';import{progressSummary}from'../services/progressService.js';import{progressBar}from'../components/progressBar.js';
-export function homeView(){const app=document.querySelector('#app'),p=progressSummary();app.innerHTML=`<div class="page"><section class="hero"><div><p class="eyebrow">小学6年生・円の面積</p><h1>図形の見方が分かると、式が見えてくる。</h1><p class="lead">円、おうぎ形、組み合わせた図形を「何として考えるか」から練習しよう。</p><div class="actions"><a class="btn btn-primary" href="#concept/circle">学習を始める</a><a class="btn btn-secondary" href="${p.data.lastRoute==='#home'?'#practice/1':p.data.lastRoute}">続きから</a></div></div><div class="hero-visual" aria-hidden="true"><svg viewBox="0 0 280 240"><circle cx="120" cy="120" r="90" fill="#fff1e8" stroke="#e96524" stroke-width="8"/><path d="M120 120 L120 30 A90 90 0 0 1 210 120 Z" fill="#7db7d5" stroke="#17324d" stroke-width="4"/><circle cx="120" cy="120" r="6" fill="#17324d"/></svg></div></section><section class="section panel"><div class="toolbar"><div><h2>自分の進み具合</h2><p>${p.attempts}問に挑戦・${p.correct}問正解・最高${p.bestStreak}問連続</p></div><span class="stat-value">${p.rate}%</span></div>${progressBar(p.rate,'これまでの正答率')}</section><section class="section"><h2>4つの学び方</h2><div class="mode-grid"><a class="card mode-card" href="#concept/circle"><span class="mode-icon">◔</span><h3>しくみを知る</h3><p>円の公式と、おうぎ形の割合を動かして確かめる。</p></a><a class="card mode-card" href="#classify"><span class="mode-icon">⌕</span><h3>図形を見分ける</h3><p>計算する前に、図形をどのように見るか判断する。</p></a><a class="card mode-card" href="#stages"><span class="mode-icon">▦</span><h3>たっぷり練習</h3><p>10のテーマとランダム問題で繰り返し練習する。</p></a><a class="card mode-card" href="#challenge"><span class="mode-icon">◎</span><h3>チャレンジ</h3><p>葉っぱ型や花びら型を含む総合問題に挑む。</p></a></div></section><section class="section"><h2>10ステージ</h2><div class="stage-grid">${stages.map(s=>`<a class="card stage-card" href="#practice/${s.id}"><span class="stage-number">${s.id}</span><h3>${s.name}</h3><p>${s.description}</p></a>`).join('')}</div></section></div>`}
-export const stagesView=()=>{homeView();document.querySelector('.hero')?.remove();document.querySelector('.mode-grid')?.closest('.section')?.remove();document.querySelector('h2').textContent='テーマを選ぼう'};
+import { stages } from '../data/stages.js';
+import { progressSummary } from '../services/progressService.js';
+import { getIslandProgress, buildingLevel } from '../services/islandService.js';
+
+const dots = level => `<span class="level-dots" aria-label="島の成長レベル${level}">${[1,2,3].map(n => `<span class="level-dot ${n <= level ? 'on' : ''}"></span>`).join('')}</span>`;
+
+function building(icon, name, count) {
+  const level = buildingLevel(count);
+  return `<div class="island-building ${level ? 'unlocked' : ''} ${level >= 3 ? 'complete' : ''}"><div class="building-shape" aria-hidden="true">${icon}</div><span>${name}</span></div>`;
+}
+
+export function homeView() {
+  const app = document.querySelector('#app');
+  const progress = progressSummary();
+  const island = getIslandProgress();
+  const levels = {
+    pizza: buildingLevel(island.pizza),
+    cake: buildingLevel(island.cake),
+    rescue: buildingLevel(island.rescue),
+    tower: Math.min(3, Math.floor(progress.correct / 5))
+  };
+  app.innerHTML = `<div class="page">
+    <section class="island-hero">
+      <span class="island-cloud" style="top:52px;right:13%" aria-hidden="true"></span>
+      <span class="island-cloud" style="top:135px;right:38%;transform:scale(.65)" aria-hidden="true"></span>
+      <div class="island-copy"><p class="eyebrow">小学6年生・円の面積</p><h1>まるのひみつ島</h1><p class="lead">さわって、動かして、ひみつを見つけよう。できることが増えると、島も少しずつ育つよ。</p><div class="actions"><a class="btn btn-primary" href="#play/pizza">島をたんけんする</a><span class="chip">集めたかけら ${island.total}こ</span></div></div>
+      <div class="island-map" aria-hidden="true"></div>
+      <div class="island-buildings">${building('◔','ピザ',island.pizza)}${building('◕','ケーキ',island.cake)}${building('◎','レスキュー',island.rescue)}${building('△','タワー',progress.correct)}</div>
+    </section>
+    <section class="section"><div class="toolbar"><div><h2>どこへ行く？</h2><p>最初は「見る・動かす」だけで大丈夫。少しずつ式へ進みます。</p></div><span class="chip">おすすめ：ピザこうじょう</span></div>
+      <div class="adventure-grid">
+        <a class="adventure-card pizza" href="#play/pizza"><span class="adventure-art" aria-hidden="true">◔</span><p class="eyebrow">さわって動かす</p><h3>ピザこうじょう</h3><p>円を切って、長方形に変身させよう。</p>${dots(levels.pizza)}</a>
+        <a class="adventure-card cake" href="#play/cake"><span class="adventure-art" aria-hidden="true">◕</span><p class="eyebrow">ぬって見つける</p><h3>ケーキショップ</h3><p>何切れ分かをぬって、分数を見つけよう。</p>${dots(levels.cake)}</a>
+        <a class="adventure-card rescue" href="#play/rescue"><span class="adventure-art" aria-hidden="true">◎</span><p class="eyebrow">図で考える</p><h3>ずけいレスキュー</h3><p>道具を選んで、色の部分を助けよう。</p>${dots(levels.rescue)}</a>
+        <a class="adventure-card tower" href="#challenge"><span class="adventure-art" aria-hidden="true">△</span><p class="eyebrow">じぶんで挑戦</p><h3>チャレンジタワー</h3><p>式や答えまで、自分の力で考えよう。</p>${dots(levels.tower)}</a>
+      </div>
+    </section>
+    <section class="panel section"><div class="toolbar"><div><h2>先生・じっくり学びたい人へ</h2><p>これまでの10ステージと詳しい学習も、ここから続けられます。</p></div><div class="actions"><a class="btn btn-secondary" href="#stages">10ステージを見る</a><a class="btn btn-secondary" href="#concept/circle">しくみを詳しく見る</a></div></div></section>
+  </div>`;
+}
+
+export function stagesView() {
+  const app = document.querySelector('#app');
+  app.innerHTML = `<div class="page"><div class="toolbar"><div><p class="eyebrow">チャレンジタワー</p><h1>じっくり考える10ステージ</h1><p class="lead">操作で分かってきたら、式や答えまで自分で考えよう。</p></div><a class="btn btn-secondary" href="#home">島へ戻る</a></div><div class="stage-grid section">${stages.map(stage => `<a class="card stage-card" href="#practice/${stage.id}"><span class="stage-number">${stage.id}</span><h3>${stage.name}</h3><p>${stage.description}</p></a>`).join('')}</div></div>`;
+}
