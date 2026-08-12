@@ -61,3 +61,7 @@ docs/                追加・設計・手動確認の資料
 ## テスト
 
 公開URLの末尾に `#test` を付けるか、設定画面の「自動テストを開く」を押します。成功・失敗・期待値・実際の値が表示されます。
+
+## 公開ページ
+
+[GitHub Pagesで開く](https://tt-sensei.github.io/enmenseki/)
