@@ -17,8 +17,7 @@ export function homeView() {
   const levels = {
     pizza: buildingLevel(island.pizza),
     cake: buildingLevel(island.cake),
-    rescue: buildingLevel(island.rescue),
-    tower: Math.min(3, Math.floor(progress.correct / 5))
+    rescue: buildingLevel(island.rescue)
   };
   app.innerHTML = `<div class="page">
     <section class="island-hero">
@@ -28,14 +27,21 @@ export function homeView() {
       <div class="island-map" aria-hidden="true"></div>
       <div class="island-buildings">${building('◔','ピザ',island.pizza)}${building('◕','ケーキ',island.cake)}${building('◎','レスキュー',island.rescue)}${building('△','タワー',progress.correct)}</div>
     </section>
-    <section class="section"><div class="toolbar"><div><h2>どこへ行く？</h2><p>最初は「見る・動かす」だけで大丈夫。少しずつ式へ進みます。</p></div><span class="chip">おすすめ：ピザこうじょう</span></div>
-      <div class="adventure-grid">
-        <a class="adventure-card pizza" href="#play/pizza"><span class="adventure-art" aria-hidden="true">◔</span><p class="eyebrow">さわって動かす</p><h3>ピザこうじょう</h3><p>円を切って、長方形に変身させよう。</p>${dots(levels.pizza)}</a>
-        <a class="adventure-card cake" href="#play/cake"><span class="adventure-art" aria-hidden="true">◕</span><p class="eyebrow">ぬって見つける</p><h3>ケーキショップ</h3><p>何切れ分かをぬって、分数を見つけよう。</p>${dots(levels.cake)}</a>
-        <a class="adventure-card rescue" href="#play/rescue"><span class="adventure-art" aria-hidden="true">◎</span><p class="eyebrow">図で考える</p><h3>ずけいレスキュー</h3><p>道具を選んで、色の部分を助けよう。</p>${dots(levels.rescue)}</a>
-        <a class="adventure-card tower" href="#challenge"><span class="adventure-art" aria-hidden="true">△</span><p class="eyebrow">じぶんで挑戦</p><h3>チャレンジタワー</h3><p>式や答えまで、自分の力で考えよう。</p>${dots(levels.tower)}</a>
+    <section class="section route-section"><div class="route-grid">
+      <div class="route-panel route-understanding"><div class="route-panel-header"><div><p class="route-kicker">まずは図をさわって</p><h2>理解を深める</h2><p>動かす・ぬる・分ける体験から、円の見方をつかもう。</p></div><span class="route-number">01</span></div>
+        <div class="adventure-grid understanding-grid">
+          <a class="adventure-card pizza" href="#play/pizza"><span class="adventure-art" aria-hidden="true">◔</span><p class="eyebrow">さわって動かす</p><h3>ピザこうじょう</h3><p>円を切って、平行四辺形に近づけよう。</p>${dots(levels.pizza)}</a>
+          <a class="adventure-card cake" href="#play/cake"><span class="adventure-art" aria-hidden="true">◕</span><p class="eyebrow">ぬって見つける</p><h3>ケーキショップ</h3><p>何切れ分かをぬって、分数を見つけよう。</p>${dots(levels.cake)}</a>
+          <a class="adventure-card rescue" href="#play/rescue"><span class="adventure-art" aria-hidden="true">◎</span><p class="eyebrow">図で考える</p><h3>ずけいレスキュー</h3><p>道具を選んで、色の部分を助けよう。</p>${dots(levels.rescue)}</a>
+        </div>
       </div>
-    </section>
+      <div class="route-panel route-practice"><div class="route-panel-header"><div><p class="route-kicker">分かったことを使って</p><h2>演習</h2><p>図形を見分けるところから、式と答えまで取り組もう。</p></div><span class="route-number">02</span></div>
+        <div class="practice-summary"><div><strong>10</strong><span>ステージ</span></div><div><strong>${progress.correct}</strong><span>正解数</span></div></div>
+        <a class="btn btn-primary practice-launch" href="#challenge">演習をはじめる</a>
+        <a class="btn btn-secondary practice-list-link" href="#stages">ステージ一覧を見る</a>
+        <p class="small-note">「理解を深める」のあとに進むのがおすすめです。</p>
+      </div>
+    </div></section>
     <section class="panel section"><div class="toolbar"><div><h2>先生・じっくり学びたい人へ</h2><p>これまでの10ステージと詳しい学習も、ここから続けられます。</p></div><div class="actions"><a class="btn btn-secondary" href="#stages">10ステージを見る</a><a class="btn btn-secondary" href="#concept/circle">しくみを詳しく見る</a></div></div></section>
   </div>`;
 }
