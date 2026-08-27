@@ -23,7 +23,7 @@ export function homeView() {
     <section class="island-hero">
       <span class="island-cloud" style="top:52px;right:13%" aria-hidden="true"></span>
       <span class="island-cloud" style="top:135px;right:38%;transform:scale(.65)" aria-hidden="true"></span>
-      <div class="island-copy"><p class="eyebrow">小学6年生・円の面積</p><h1>まるのひみつ島</h1><p class="lead">さわって、動かして、ひみつを見つけよう。できることが増えると、島も少しずつ育つよ。</p><div class="actions"><a class="btn btn-primary" href="#play/pizza">島をたんけんする</a><span class="chip">集めたかけら ${island.total}こ</span></div>${naviGuide('円は、分けて並べると見え方が変わるよ。', 'pointing', 'hero')}</div>
+      <div class="island-copy"><p class="eyebrow">小学6年生・円の面積</p><h1>まるのひみつ島</h1><div class="actions"><a class="btn btn-primary" href="#play/pizza">島をたんけんする</a></div></div>
       <div class="island-map" aria-hidden="true"></div>
       <div class="island-buildings">${building('◔','ピザ',island.pizza)}${building('◕','ケーキ',island.cake)}${building('◎','レスキュー',island.rescue)}${building('△','タワー',progress.correct)}</div>
     </section>
