@@ -1,7 +1,7 @@
 .island-hero{
   position:relative;
-  min-height:360px;
-  padding:38px;
+  min-height:300px;
+  padding:28px;
   border-radius:22px;
   overflow:hidden;
   background:linear-gradient(112deg,#eef4f6 0 54%,#d9ece6 54% 100%);
