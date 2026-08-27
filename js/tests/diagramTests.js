@@ -25,7 +25,7 @@ export function diagramTests() {
     { name: 'まがたま型は3つの直径端点を表示', actual: (magatama.match(/<circle/g) || []).length, expected: 3, pass: (magatama.match(/<circle/g) || []).length === 3 },
     { name: '組み合わせ図形から花を削除', actual: stage8.some(problem => problem.type === 'flower'), expected: false, pass: !stage8.some(problem => problem.type === 'flower') },
     { name: 'まがたま型を5問登録', actual: magatamaProblems.length, expected: 5, pass: magatamaProblems.length === 5 },
-    { name: 'まがたま型の式と答えが一致', actual: magatamaProblems.every(problem => nearlyEqual(parseMathExpression(problem.expression), problem.answer, problem.tolerance)), expected: true, pass: magatamaProblems.every(problem => nearlyEqual(parseMathExpression(problem.expression), problem.answer, problem.tolerance) },
+    { name: 'まがたま型の式と答えが一致', actual: magatamaProblems.every(problem => nearlyEqual(parseMathExpression(problem.expression), problem.answer, problem.tolerance)), expected: true, pass: magatamaProblems.every(problem => nearlyEqual(parseMathExpression(problem.expression), problem.answer, problem.tolerance)) },
     { name: '円の展開は扇形を上下交互に配置', actual: alternating, expected: true, pass: alternating },
     { name: '細かく分けるほど端のずれが小さい', actual: unfold36.skew < unfold12.skew, expected: true, pass: unfold36.skew < unfold12.skew },
     { name: '細かく分けるほど横が円周の半分に近づく', actual: widthGetsCloser, expected: true, pass: widthGetsCloser }
