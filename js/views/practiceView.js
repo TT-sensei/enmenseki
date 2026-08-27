@@ -32,6 +32,8 @@ export function practiceView(stageId = '1', forcedProblem = null) {
   let attempts;
   let feedback;
   let answered;
+  let answerRevealed;
+  let answerWasRevealed;
   const app = document.querySelector('#app');
   const stepNames = ['図形を見分ける', '考え方を選ぶ', '式をつくる', '計算して答える'];
 
@@ -45,6 +47,8 @@ export function practiceView(stageId = '1', forcedProblem = null) {
     attempts = 0;
     feedback = '';
     answered = false;
+    answerRevealed = false;
+    answerWasRevealed = false;
   }
 
   function nextProblem() {
@@ -77,15 +81,18 @@ export function practiceView(stageId = '1', forcedProblem = null) {
       return `<h2>式をつくる</h2>${formulaBuilder(expression)}
         <div class="actions"><button class="btn btn-secondary" data-back>戻る</button><button class="btn btn-primary" data-check-expression>式を確かめる</button></div>`;
     }
-    return `<h2>計算して答える</h2>
-      <p class="formula-display">${expression}</p>
-      <div class="answer-row"><input class="answer-input" data-answer inputmode="decimal" value="${answer}" aria-label="答え"><select class="select" data-unit aria-label="単位">${UNITS.map(item => `<option ${item === unit ? 'selected' : ''}>${item}</option>`).join('')}</select></div>
-      ${answered ? '' : numberPad()}
-      ${answered ? `<section class="section"><h3>自分の考え方を振り返ろう</h3>
-        <div class="choice-list">${problem.reflectionChoices.map(item => `<button class="choice" data-reflection>${item}</button>`).join('')}</div>
-        <div class="actions"><button class="btn btn-primary" data-next-problem>次の問題</button><a class="btn btn-secondary" href="#result/${stage}">結果を見る</a></div>
-        <details><summary>解説</summary><p>${problem.explanation}</p><p>答え：${formatNumber(problem.answer)} ${problem.unit}</p></details></section>` :
-        `<div class="actions"><button class="btn btn-secondary" data-back>式に戻る</button><button class="btn btn-primary" data-check-answer>答えを確かめる</button></div>`}`;
+    return '<h2>計算して答える</h2>' +
+      '<p class="formula-display">' + expression + '</p>' +
+      '<div class="answer-row"><input class="answer-input" data-answer inputmode="decimal" value="' + answer + '" aria-label="答え"><select class="select" data-unit aria-label="単位">' + UNITS.map(item => '<option ' + (item === unit ? 'selected' : '') + '>' + item + '</option>').join('') + '</select></div>' +
+      (answered ? '' : answerRevealed ? '' : numberPad()) +
+      (answered ? '<section class="section"><h3>自分の考え方を振り返ろう</h3>' +
+        '<div class="choice-list">' + problem.reflectionChoices.map(item => '<button class="choice" data-reflection>' + item + '</button>').join('') + '</div>' +
+        '<div class="actions"><button class="btn btn-primary" data-next-problem>次の問題</button><a class="btn btn-secondary" href="#result/' + stage + '">結果を見る</a></div>' +
+        '<details><summary>解説</summary><p>' + problem.explanation + '</p><p>答え：' + formatNumber(problem.answer) + ' ' + problem.unit + '</p></details></section>' :
+        answerRevealed ? '<section class="section answer-reveal"><div class="feedback success"><strong>答え：' + formatNumber(problem.answer) + ' ' + problem.unit + '</strong><p>答えを確認したら、解説を読んで次へ進もう。</p></div>' +
+        '<details open><summary>解き方を確認</summary><p>' + problem.explanation + '</p></details>' +
+        '<div class="actions"><button class="btn btn-secondary" data-try-again>もう一度自分で計算</button><button class="btn btn-primary" data-next-problem>次の問題</button></div></section>' :
+        '<div class="actions"><button class="btn btn-secondary" data-back>式に戻る</button><button class="btn btn-secondary" data-show-answer>答えを見る</button><button class="btn btn-primary" data-check-answer>答えを確かめる</button></div>');
   }
 
   function draw() {
@@ -165,11 +172,13 @@ export function practiceView(stageId = '1', forcedProblem = null) {
       attempts++;
       const result = diagnoseAnswer(problem, answer, unit);
       feedback = result.message;
-      recordAttempt(problem, { correct: result.correct, firstTry: attempts <= 2, hintsUsed: hints });
+      recordAttempt(problem, { correct: result.correct, firstTry: attempts <= 2 && !answerWasRevealed, hintsUsed: hints });
       playTone(loadData().settings.sound, result.correct);
       if (result.correct) { answered = true; toast('正解！ 学びを記録しました'); }
       draw();
     });
+    app.querySelector('[data-show-answer]')?.addEventListener('click', () => { answerRevealed = true; answerWasRevealed = true; hints = Math.min(5, hints + 1); feedback = ''; draw(); });
+    app.querySelector('[data-try-again]')?.addEventListener('click', () => { answerRevealed = false; answer = ''; feedback = ''; draw(); });
     app.querySelector('[data-next-problem]')?.addEventListener('click', nextProblem);
     app.querySelectorAll('[data-reflection]').forEach(button => {
       button.onclick = () => {
