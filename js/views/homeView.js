@@ -1,7 +1,6 @@
 import { stages } from '../data/stages.js';
 import { progressSummary } from '../services/progressService.js';
 import { getIslandProgress, buildingLevel } from '../services/islandService.js';
-import { naviGuide } from '../components/naviGuide.js';
 
 const dots = level => `<span class="level-dots" aria-label="島の成長レベル${level}">${[1,2,3].map(n => `<span class="level-dot ${n <= level ? 'on' : ''}"></span>`).join('')}</span>`;
 
