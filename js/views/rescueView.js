@@ -1,6 +1,7 @@
 import { renderDiagram } from '../diagrams/composite.js';
 import { awardPiece } from '../services/islandService.js';
 import { toast } from '../components/toast.js';
+import { naviGuide } from '../components/naviGuide.js';
 
 const tools = [
   { id: 'whole', label: 'ぜんぶ求める' },
@@ -43,7 +44,7 @@ export function rescueView() {
   function draw() {
     const mission = missions[missionIndex];
     const parts = shuffledParts(mission);
-    app.innerHTML = `<div class="page play-shell"><div class="mission-banner"><div><strong>ずけいレスキュー</strong><p>ミッション ${missionIndex + 1}/${missions.length}</p></div><a class="btn btn-secondary" href="#home">島へ戻る</a></div><div class="play-board"><section class="game-stage rescue-stage ${toolSolved ? 'solved' : ''} ${messageKind === 'oops' ? 'oops' : ''}">${renderDiagram(mission.diagram)}${messageKind === 'oops' ? '<div class="sr-only" aria-live="assertive">図形が反応しました</div>' : ''}</section><aside class="panel game-panel"><p class="eyebrow">${phase === 'tool' ? 'レベル1　見る・選ぶ' : 'レベル2　カードをならべる'}</p><h1>${mission.title}</h1><div class="game-message ${messageKind}">${message}</div>
+    app.innerHTML = `<div class="page play-shell"><div class="mission-banner"><div><strong>ずけいレスキュー</strong><p>ミッション ${missionIndex + 1}/${missions.length}</p></div><a class="btn btn-secondary" href="#home">島へ戻る</a></div><div class="play-board"><section class="game-stage rescue-stage ${toolSolved ? 'solved' : ''} ${messageKind === 'oops' ? 'oops' : ''}">${renderDiagram(mission.diagram)}${messageKind === 'oops' ? '<div class="sr-only" aria-live="assertive">図形が反応しました</div>' : ''}</section><aside class="panel game-panel"><p class="eyebrow">${phase === 'tool' ? 'レベル1　見る・選ぶ' : 'レベル2　カードをならべる'}</p><h1>${mission.title}</h1><div class="game-message ${messageKind}">${message}</div>${naviGuide(phase === 'tool' ? '色のついた部分を、どう求めるか考えよう。' : '図の動きと同じ順番に、式カードを並べよう。')}
       ${phase === 'tool' ? `<h3>どの道具を使う？</h3><div class="choice-list strategy-tools">${tools.map(tool => `<button class="choice game-choice ${selectedTool === tool.id ? 'selected' : ''}" data-tool="${tool.id}" ${toolSolved ? 'disabled' : ''}>${tool.label}</button>`).join('')}</div>${toolSolved ? `<div class="feedback success">${mission.insight}</div><div class="built-expression">${mission.auto.replace(mission.operator, ' □ ')}</div><p>□に入る記号を選ぼう。</p><div class="operator-row">${['＋','−','×','÷'].map(operator => `<button class="operator-card" data-operator="${operator}" ${operatorSolved ? 'disabled' : ''}>${operator}</button>`).join('')}</div>${operatorSolved ? '<button class="btn btn-primary" data-level2>カードならべへ</button>' : ''}` : ''}` : missionDone ? `<div class="feedback success">${mission.explanation || '図の動きが、この式になったよ。'}<div class="built-expression">${mission.auto}</div></div><span class="reward-pop">◎ ずけいのかけらを1こゲット！</span><button class="btn btn-primary" data-next-mission>${missionIndex === missions.length - 1 ? 'チャレンジタワーへ' : '次のミッション'}</button>` : `<h3>式カードを正しい順番でタップ</h3><div class="built-expression">${built.length ? built.join('　') : 'ここに式ができるよ'}</div><div class="expression-cards">${parts.map((part,index) => `<button class="expression-card ${used.has(index) ? 'used' : ''}" data-part="${index}" ${used.has(index) ? 'disabled' : ''}>${part}</button>`).join('')}</div><div class="actions"><button class="btn btn-secondary" data-reset-cards>やり直す</button><button class="btn btn-primary" data-check-cards ${built.length === mission.parts.length ? '' : 'disabled'}>式を確かめる</button></div>`}
       </aside></div></div>`;
     bind();
@@ -94,3 +95,4 @@ export function rescueView() {
   }
   draw();
 }
+

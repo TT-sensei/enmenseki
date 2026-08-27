@@ -2,6 +2,7 @@ import { sectorPath } from '../diagrams/sector.js';
 import { simplifyFraction } from '../utils/fractions.js';
 import { awardPiece } from '../services/islandService.js';
 import { toast } from '../components/toast.js';
+import { naviGuide } from '../components/naviGuide.js';
 
 // 色塗りから分数へ進み、続けて中心角を選ぶ6つの短いミッション。
 const missions = [
@@ -47,7 +48,7 @@ export function cakeShopView() {
   function draw() {
     const mission = missions[missionIndex];
     const heading = phase === 'paint' ? mission.title : phase === 'angle' ? '色の部分の中心角は？' : '分数と中心角がつながった！';
-    app.innerHTML = `<div class="page play-shell"><div class="mission-banner"><div><strong>ケーキショップ</strong><p>注文 ${missionIndex + 1}/${missions.length}</p></div><a class="btn btn-secondary" href="#home">島へ戻る</a></div><div class="play-board"><section class="game-stage">${cakeSvg(mission, selected, phase)}</section><aside class="panel game-panel"><p class="eyebrow">${phase === 'paint' ? 'ぬって見つける' : '中心角を見つける'}</p><h1>${heading}</h1><div class="piece-counter">${phase === 'paint' ? `ぬった数 ${selected.size}/${mission.target}` : `円1周は360°`}</div><div class="game-message ${messageKind}">${message}</div>${phase === 'paint' ? '<button class="btn btn-primary" data-check>これでOK</button><p class="small-note">多くぬったときは、もう一度タップすると消せます。</p>' : phase === 'angle' ? `<div class="choice-list">${mission.angleChoices.map(angle => `<button class="choice game-choice" data-angle="${angle}">${angle}°</button>`).join('')}</div><p class="small-note">中心からのびる2本の線と、その間の開きに注目しよう。</p>` : `${fractionResult(mission)}<div class="feedback success">${mission.target}/${mission.total}は円全体の${simplifyFraction(mission.target, mission.total).denominator}分の${simplifyFraction(mission.target, mission.total).numerator}。360°の同じ割合が中心角${mission.angle}°だね。</div><span class="reward-pop">◕ おうぎ形のかけらを1こゲット！</span><button class="btn btn-primary" data-next>${missionIndex === missions.length - 1 ? '島へ戻る' : '次の注文'}</button>`}</aside></div></div>`;
+    app.innerHTML = `<div class="page play-shell"><div class="mission-banner"><div><strong>ケーキショップ</strong><p>注文 ${missionIndex + 1}/${missions.length}</p></div><a class="btn btn-secondary" href="#home">島へ戻る</a></div><div class="play-board"><section class="game-stage">${cakeSvg(mission, selected, phase)}</section><aside class="panel game-panel"><p class="eyebrow">${phase === 'paint' ? 'ぬって見つける' : '中心角を見つける'}</p><h1>${heading}</h1><div class="piece-counter">${phase === 'paint' ? `ぬった数 ${selected.size}/${mission.target}` : `円1周は360°`}</div><div class="game-message ${messageKind}">${message}</div>${naviGuide(phase === 'paint' ? 'ぬった切れ数は、円全体の何分のいくつかな？' : phase === 'angle' ? '中心からの開きに注目しよう。' : '分数と中心角がつながったね。')}${phase === 'paint' ? '<button class="btn btn-primary" data-check>これでOK</button><p class="small-note">多くぬったときは、もう一度タップすると消せます。</p>' : phase === 'angle' ? `<div class="choice-list">${mission.angleChoices.map(angle => `<button class="choice game-choice" data-angle="${angle}">${angle}°</button>`).join('')}</div><p class="small-note">中心からのびる2本の線と、その間の開きに注目しよう。</p>` : `${fractionResult(mission)}<div class="feedback success">${mission.target}/${mission.total}は円全体の${simplifyFraction(mission.target, mission.total).denominator}分の${simplifyFraction(mission.target, mission.total).numerator}。360°の同じ割合が中心角${mission.angle}°だね。</div><span class="reward-pop">◕ おうぎ形のかけらを1こゲット！</span><button class="btn btn-primary" data-next>${missionIndex === missions.length - 1 ? '島へ戻る' : '次の注文'}</button>`}</aside></div></div>`;
     bind();
   }
 
@@ -96,3 +97,4 @@ export function cakeShopView() {
   }
   draw();
 }
+
