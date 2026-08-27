@@ -1,3 +1,53 @@
+.island-hero{
+  position:relative;
+  min-height:300px;
+  padding:28px;
+  border-radius:22px;
+  overflow:hidden;
+  background:linear-gradient(112deg,#eef4f6 0 54%,#d9ece6 54% 100%);
+  border:1px solid #d2e0e4;
+  box-shadow:var(--shadow-soft);
+}
+.island-cloud{position:absolute;width:100px;height:30px;border-radius:99px;background:rgba(255,255,255,.72)}
+.island-cloud:before,.island-cloud:after{content:"";position:absolute;border-radius:50%;background:inherit}
+.island-cloud:before{width:42px;height:42px;left:16px;top:-19px}
+.island-cloud:after{width:34px;height:34px;right:11px;top:-13px}
+.island-copy{position:relative;z-index:4;max-width:540px}
+.island-copy .lead{color:#506876;max-width:500px}
+.island-map{
+  position:absolute;
+  inset:auto 3% 7% 39%;
+  height:67%;
+  border-radius:50% 48% 45% 52%;
+  background:#f2d89c;
+  border:8px solid rgba(255,255,255,.52);
+  box-shadow:inset 0 -18px 0 rgba(183,133,59,.12),0 10px 24px rgba(30,52,72,.06);
+}
+.island-buildings{
+  position:absolute;
+  z-index:5;
+  inset:44% 6% 10% 42%;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  align-items:end;
+  gap:10px;
+}
+.island-building{display:grid;place-items:center;gap:5px;text-align:center;font-weight:800;color:var(--navy);font-size:.9rem}
+.building-shape{
+  display:grid;
+  place-items:center;
+  width:66px;
+  height:66px;
+  border:3px solid rgba(30,52,72,.72);
+  border-radius:14px 14px 8px 8px;
+  background:rgba(255,255,255,.88);
+  font-size:1.8rem;
+  filter:grayscale(1);
+  opacity:.42;
+  transition:transform .25s ease,opacity .25s ease,box-shadow .25s ease;
+}
+.island-building.unlocked .building-shape{filter:none;opacity:1;transform:translateY(-3px)}
+.island-building.complete .building-shape{box-shadow:0 0 0 5px rgba(255,255,255,.58),0 7px 14px rgba(30,52,72,.14)}
 .adventure-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
 .adventure-card{
   position:relative;
@@ -55,11 +105,18 @@
 .game-message{min-height:76px;padding:13px 14px;border-radius:11px;background:var(--blue-soft);border-left:4px solid var(--blue)}
 .game-message.good{background:var(--green-soft);border-color:var(--green)}
 .game-message.oops{background:#fff6e7;border-color:#d29117}
-.pizza-piece,.cake-piece{cursor:pointer;transition:opacity .2s ease,transform .2s ease}
-.pizza-piece:hover,.cake-piece:hover{filter:brightness(1.04)}
-.pizza-piece.moved{opacity:.15}
+.cake-piece{cursor:pointer;transition:opacity .2s ease,transform .2s ease}
+.cake-piece:hover{filter:brightness(1.04)}
 .cake-piece.selected{filter:brightness(.92);stroke:var(--navy);stroke-width:5}
-.arranged-piece{animation:pieceLand .28s ease both}
+.circle-unfolding{display:block;width:100%;height:auto}
+.circle-unfolding text{font-family:inherit;fill:#17324d}
+.unfold-label{font-size:16px;font-weight:800}
+.unfold-arrow line,.unfold-arrow path{fill:none;stroke:#c95d2b;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.unfold-target-guide{transition:opacity .2s ease}
+.unfold-piece path{filter:drop-shadow(0 1px 1px rgba(23,50,77,.1))}
+.unfold-measures line{stroke:#376b87;stroke-width:1.8}
+.unfold-measures text{font-size:15px;font-weight:850;fill:#376b87}
+.game-stage .circle-unfolding{max-height:330px}
 .operator-row,.strategy-tools,.expression-cards{display:flex;flex-wrap:wrap;gap:9px}
 .operator-card,.expression-card{min-height:52px;padding:9px 15px;border:2px solid var(--line);border-radius:10px;background:#fff;font-weight:850}
 .expression-card.used{opacity:.35}
@@ -74,7 +131,6 @@
 .geometry-key{fill:#17324d;font-size:16px;font-weight:800}
 .measure-line{fill:none;stroke:#376b87;stroke-width:2;stroke-dasharray:7 6}
 .decompose-line{fill:none;stroke:#c95d2b;stroke-width:3;stroke-dasharray:8 6}
-@keyframes pieceLand{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
 @keyframes wiggle{25%{transform:rotate(-2deg)}75%{transform:rotate(2deg)}}
 @keyframes rescuePop{50%{transform:scale(1.035)}}
 @keyframes rewardPop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
