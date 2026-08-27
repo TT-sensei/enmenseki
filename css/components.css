@@ -144,3 +144,47 @@
 .navi-guide--hero img{width:66px;height:66px;flex-basis:66px}
 .navi-guide--compact img{width:50px;height:50px;flex-basis:50px}
 .figure-note{margin:7px 0 0;color:var(--muted);font-size:.78rem;text-align:center}
+
+.badge-page .lead{max-width:720px}
+.badge-overview{display:flex;align-items:center;gap:18px;padding:14px 18px}
+.badge-overview-stat{display:grid;gap:2px;min-width:108px;padding:10px 14px;border-radius:12px;background:var(--orange-soft);text-align:center}
+.badge-overview-stat strong{color:var(--orange-dark);font-size:1.55rem;line-height:1.05}
+.badge-overview-stat span{color:var(--muted);font-size:.8rem}
+.badge-overview>p{margin:0;color:var(--muted);font-size:.9rem}
+.badge-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+.badge-card{display:flex;min-height:218px;flex-direction:column;align-items:center;padding:16px 13px;text-align:center;border:1px solid var(--line);border-radius:16px;background:var(--paper);box-shadow:var(--shadow-soft)}
+.badge-card.is-earned{border-color:#e2b36a;background:linear-gradient(160deg,#fffdf6,#fff8e7)}
+.badge-card.is-locked{opacity:.72;background:#f4f7f8}
+.badge-emblem{position:relative;display:grid;place-items:center;width:76px;height:76px;margin:0 auto 9px;border:6px solid #e2b36a;border-radius:50%;background:linear-gradient(145deg,#fffdf4,#f6ce82);color:var(--orange-dark);font-size:2rem;font-weight:850;box-shadow:0 4px 0 rgba(177,125,47,.18),inset 0 0 0 2px rgba(255,255,255,.7)}
+.badge-emblem:after{content:"";position:absolute;inset:-8px;border:1px solid rgba(226,179,106,.55);border-radius:50%}
+.badge-card.is-locked .badge-emblem{border-color:#c6d0d5;background:#e8eef0;color:#71808a;box-shadow:none;filter:grayscale(.7)}
+.badge-status{margin:0 0 3px;color:var(--orange-dark);font-size:.74rem;font-weight:850;letter-spacing:.04em}
+.badge-card.is-locked .badge-status{color:var(--muted)}
+.badge-card h3{margin:0 0 5px;font-size:1.02rem}
+.badge-description{margin:0;color:var(--muted);font-size:.78rem;line-height:1.45}
+.badge-condition{margin:auto 0 0;padding-top:10px;color:var(--navy);font-size:.78rem;font-weight:750}
+.fragment-panel{padding-bottom:16px}
+.fragment-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.fragment-card{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:#fff}
+.fragment-card .mode-icon{font-size:1.45rem}
+.fragment-card h3,.fragment-card p{margin:0}
+.fragment-card h3{font-size:.95rem}
+.fragment-card p{color:var(--muted);font-size:.76rem}
+.fragment-card strong{color:var(--orange-dark);font-size:.78rem;white-space:nowrap}
+@media(max-width:1000px){
+  .badge-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:760px){
+  .badge-overview{align-items:stretch;flex-wrap:wrap}
+  .badge-overview>p{flex-basis:100%}
+  .badge-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .fragment-grid{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  .badge-grid{gap:10px}
+  .badge-card{min-height:196px;padding:13px 10px}
+  .badge-emblem{width:64px;height:64px;font-size:1.7rem}
+  .badge-description{font-size:.74rem}
+  .fragment-card{grid-template-columns:auto 1fr}
+  .fragment-card strong{grid-column:2}
+}
