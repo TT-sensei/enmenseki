@@ -3,25 +3,34 @@ function rounded(value) {
 }
 
 /*
- * 円の切片を、上下の帯として隣り合わせに置く。
- * 上下の基準線を同じ centerY にそろえることで、
- * 旧実装のように切片が反対側まで伸びてひし形になるのを防ぐ。
+ * 円を切り開いてできる切片を、上下交互に並べるための形。
+ * 円の弧を残したまま、中心側を少し右へずらすことで、
+ * 長方形ではなく「平行四辺形に近い形」へ変わる見え方にする。
  */
-export function rearrangedSlicePath({ x, width, topY, centerY, bottomY, top }) {
-  const left = rounded(x);
-  const right = rounded(x + width);
+export function rearrangedSlicePath({ x, width, topY, centerY, bottomY, top, skew = 16 }) {
+  const topLeft = rounded(x);
+  const topRight = rounded(x + width);
+  const innerLeft = rounded(x + skew);
+  const innerRight = rounded(x + width + skew);
   const middle = rounded(x + width / 2);
-  const curve = Math.min(10, Math.max(2, width * 0.12));
+  const curve = Math.min(9, Math.max(2.5, width * 0.16));
 
   if (top) {
-    return 'M ' + left + ' ' + topY +
-      ' Q ' + middle + ' ' + rounded(topY - curve) + ' ' + right + ' ' + topY +
-      ' L ' + right + ' ' + centerY + ' L ' + left + ' ' + centerY + ' Z';
+    return 'M ' + topLeft + ' ' + topY +
+      ' Q ' + middle + ' ' + rounded(topY - curve) + ' ' + topRight + ' ' + topY +
+      ' L ' + innerRight + ' ' + centerY + ' L ' + innerLeft + ' ' + centerY + ' Z';
   }
 
-  return 'M ' + left + ' ' + centerY +
-    ' L ' + right + ' ' + centerY +
-    ' L ' + right + ' ' + bottomY +
-    ' Q ' + middle + ' ' + rounded(bottomY + curve) + ' ' + left + ' ' + bottomY +
+  return 'M ' + innerLeft + ' ' + centerY +
+    ' L ' + innerRight + ' ' + centerY +
+    ' L ' + topRight + ' ' + bottomY +
+    ' Q ' + middle + ' ' + rounded(bottomY + curve) + ' ' + topLeft + ' ' + bottomY +
     ' Z';
+}
+
+export function rearrangedGuidePath({ x, width, topY, bottomY, skew = 16 }) {
+  return 'M ' + rounded(x) + ' ' + topY +
+    ' L ' + rounded(x + width) + ' ' + topY +
+    ' L ' + rounded(x + width + skew) + ' ' + bottomY +
+    ' L ' + rounded(x + skew) + ' ' + bottomY + ' Z';
 }
