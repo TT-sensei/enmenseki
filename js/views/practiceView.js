@@ -92,9 +92,10 @@ export function practiceView(stageId = '1', forcedProblem = null) {
     const data = loadData();
     data.lastRoute = `#practice/${stage || 1}`;
     saveData(data);
-    app.innerHTML = `<div class="page">
+    app.innerHTML = `<div class="page practice-page">
+      <div class="practice-context"><div><strong>演習</strong><span class="practice-context-stage">${stage ? `ステージ ${stage}` : "ランダム練習"}</span></div><span class="practice-goal">図形 → 考え方 → 式 → 答え</span></div>
       <div class="toolbar"><div><p class="eyebrow">${stage ? `ステージ ${stage}` : 'ランダム練習'}</p><h1>${problem.title}</h1></div><div class="actions"><a class="btn btn-secondary" href="#stages">ステージ一覧</a><button class="btn btn-secondary" data-random>別の問題</button></div></div>
-      <div class="stepper">${stepNames.map((name, index) => `<div class="step ${index + 1 === step ? 'active' : index + 1 < step ? 'done' : ''}">${index + 1} ${name}</div>`).join('')}</div>
+      <div class="stepper" aria-label="演習の流れ">${stepNames.map((name, index) => `<div class="step ${index + 1 === step ? 'active' : index + 1 < step ? 'done' : ''}">${index + 1} ${name}</div>`).join('')}</div>
       <div class="learning-layout"><div class="problem-main"><section class="panel"><p class="lead">${problem.instruction}</p>
         <div class="diagram-box" data-diagram tabindex="0" role="button" aria-label="図形を強調する">${renderDiagram(problem.diagram)}</div>
         ${step >= 2 ? `<h3>図から分かること</h3><div class="tag-row">${knownValuesHtml()}</div>` : ''}</section>
