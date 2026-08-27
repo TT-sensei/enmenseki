@@ -1,7 +1,7 @@
 import { compositeProblems } from '../data/compositeProblems.js';
 import { leafSvg } from '../diagrams/leaf.js';
 import { magatamaSvg } from '../diagrams/magatama.js';
-import { unfoldingGeometry } from '../diagrams/rearrangedSlices.js?v=20260827-7';
+import { unfoldingGeometry } from '../diagrams/rearrangedSlices.js?v=20260827-8';
 import { parseMathExpression } from '../utils/validator.js';
 import { nearlyEqual } from '../utils/math.js';
 
