@@ -10,21 +10,23 @@ function rounded(value) {
 export function rearrangedSlicePath({ x, width, topY, centerY, bottomY, top, skew = 16 }) {
   const topLeft = rounded(x);
   const topRight = rounded(x + width);
-  const innerLeft = rounded(x + skew);
-  const innerRight = rounded(x + width + skew);
+  const centerLeft = rounded(x + skew / 2);
+  const centerRight = rounded(x + width + skew / 2);
+  const bottomLeft = rounded(x + skew);
+  const bottomRight = rounded(x + width + skew);
   const middle = rounded(x + width / 2);
   const curve = Math.min(9, Math.max(2.5, width * 0.16));
 
   if (top) {
     return 'M ' + topLeft + ' ' + topY +
       ' Q ' + middle + ' ' + rounded(topY - curve) + ' ' + topRight + ' ' + topY +
-      ' L ' + innerRight + ' ' + centerY + ' L ' + innerLeft + ' ' + centerY + ' Z';
+      ' L ' + centerRight + ' ' + centerY + ' L ' + centerLeft + ' ' + centerY + ' Z';
   }
 
-  return 'M ' + innerLeft + ' ' + centerY +
-    ' L ' + innerRight + ' ' + centerY +
-    ' L ' + topRight + ' ' + bottomY +
-    ' Q ' + middle + ' ' + rounded(bottomY + curve) + ' ' + topLeft + ' ' + bottomY +
+  return 'M ' + centerLeft + ' ' + centerY +
+    ' L ' + centerRight + ' ' + centerY +
+    ' L ' + bottomRight + ' ' + bottomY +
+    ' Q ' + rounded(middle + skew) + ' ' + rounded(bottomY + curve) + ' ' + bottomLeft + ' ' + bottomY +
     ' Z';
 }
 
