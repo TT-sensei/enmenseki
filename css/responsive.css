@@ -12,7 +12,7 @@
   .page{padding:24px 16px 54px}
   .header-inner{padding-inline:16px}
   .adventure-grid{grid-template-columns:repeat(2,1fr)}
-  .island-hero{min-height:480px;padding:28px}
+  .island-hero{min-height:400px;padding:24px}
   .island-map{inset:auto 2% 4% 27%;height:57%}
   .island-buildings{inset:54% 4% 8% 30%}
   .building-shape{width:58px;height:58px}
