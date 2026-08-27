@@ -24,7 +24,7 @@ function circleConceptSvg(count, step) {
     <g><circle cx="135" cy="125" r="93" fill="#f7b68b" stroke="#17324d" stroke-width="4"/>${radii}<circle cx="135" cy="125" r="4" fill="#17324d"/><text x="135" y="240" text-anchor="middle">${count}等分した円</text></g>
     <path d="M250 125 H315" stroke="#e96524" stroke-width="4" marker-end="url(#arrow)"/>
     <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10Z" fill="#e96524"/></marker></defs>
-    <g opacity="${step === 0 ? '.25' : '1'}"><path d="${rearrangedGuidePath({ x: 345, width: 250, topY: 52, bottomY: 198 })}" fill="none" stroke="#17324d" stroke-width="1.5" stroke-dasharray="5 5"/>${top}${bottom}<line x1="361" y1="125" x2="611" y2="125" stroke="#17324d" stroke-width="1" stroke-dasharray="3 5"/><line x1="345" y1="211" x2="595" y2="211" stroke="#17324d"/><text x="478" y="240" text-anchor="middle">横＝円周の半分</text><text x="325" y="130" transform="rotate(-90 325 130)" text-anchor="middle">縦＝半径</text></g>
+    <g opacity="${step === 0 ? '.25' : '1'}"><path d="${rearrangedGuidePath({ x: 345, width: 250, topY: 52, bottomY: 198 })}" fill="none" stroke="#17324d" stroke-width="1.5" stroke-dasharray="5 5"/>${top}${bottom}<line x1="353" y1="125" x2="603" y2="125" stroke="#17324d" stroke-width="1" stroke-dasharray="3 5"/><line x1="345" y1="211" x2="595" y2="211" stroke="#17324d"/><text x="478" y="240" text-anchor="middle">横＝円周の半分</text><text x="325" y="130" transform="rotate(-90 325 130)" text-anchor="middle">縦＝半径</text></g>
   </svg>`;
 }
 
