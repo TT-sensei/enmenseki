@@ -1,2 +1,2 @@
-import{runTests}from'../tests/runTests.js';
+import{runTests}from'../tests/runTests.js?v=20260827-7';
 export function testView(){const results=runTests(),pass=results.filter(x=>x.pass).length;document.querySelector('#app').innerHTML=`<div class="page"><p class="eyebrow">開発・確認用</p><h1>自動テスト ${pass}/${results.length} 成功</h1><div class="feedback ${pass===results.length?'success':'error'}">${pass===results.length?'すべてのテストが成功しました。':'失敗した項目を確認してください。'}</div><div class="test-list section">${results.map(r=>`<article class="card ${r.pass?'test-pass':'test-fail'}"><strong>${r.pass?'成功':'失敗'}：${r.name}</strong><div>期待値：${r.expected} ／ 実際：${r.actual}</div></article>`).join('')}</div></div>`;return results}
