@@ -43,3 +43,33 @@
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
 }
+@media (orientation:landscape) and (min-width:700px){
+  .page{padding:18px 20px 28px}
+  .route-panel{padding:16px}
+  .route-panel-header{margin-bottom:10px}
+  .learning-layout,.play-board{grid-template-columns:minmax(0,1.08fr) minmax(300px,.92fr);gap:14px}
+  .sticky-work{position:sticky;top:74px}
+  .diagram-box{min-height:0;height:clamp(230px,41vh,310px)}
+  .diagram-box svg{max-height:100%}
+  .game-stage{min-height:0;height:clamp(260px,53vh,360px)}
+  .game-stage svg{max-height:100%}
+  .panel{padding:16px}
+  .stepper{gap:5px;margin-bottom:9px}
+  .step{padding:6px 4px;font-size:.78rem}
+  .problem-main,.problem-work{gap:10px}
+  .problem-work .panel,.game-panel{gap:9px}
+  .practice-context{margin-bottom:8px}
+  .game-message{min-height:58px;padding:9px 11px}
+  .number-pad,.formula-keys{gap:6px}
+  .number-pad button,.formula-key{min-height:44px}
+  .section{margin-top:20px}
+}
+@media (max-width:760px){
+  .route-grid{grid-template-columns:1fr}
+  .understanding-grid,.practice-room-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .section-heading{align-items:flex-start;flex-direction:column}
+}
+@media (max-width:560px){
+  .understanding-grid,.practice-room-grid{grid-template-columns:1fr}
+  .route-panel{padding:16px}
+}
