@@ -58,7 +58,7 @@ export function conceptView(kind = 'circle') {
   ];
   const drawCircle = () => {
     app.innerHTML = `<div class="page"><div class="toolbar"><div><p class="eyebrow">しくみを知る</p><h1>円は平行四辺形に近づく</h1></div><a class="btn btn-secondary" href="#concept/sector">おうぎ形の割合へ</a></div>
-      <div class="learning-layout"><section class="panel"><div class="diagram-box">${circleConceptSvg(slices, step)}</div><div class="concept-controls">${[8,16,32,64].map(value => `<button class="btn btn-secondary slice-button" data-slices="${value}" aria-pressed="${value === slices}">${value}分割</button>`).join('')}</div></section>
+      <div class="learning-layout"><section class="panel"><div class="diagram-box">${circleConceptSvg(slices, step)}</div><p class="figure-note">※ 図は、円を分けて並べたときの形のイメージです。</p><div class="concept-controls">${[8,16,32,64].map(value => `<button class="btn btn-secondary slice-button" data-slices="${value}" aria-pressed="${value === slices}">${value}分割</button>`).join('')}</div></section>
       <section class="panel"><p class="eyebrow">${step + 1}/5</p>${naviGuide('切れ目を並べると、円の面積の秘密が見えてくるよ。', 'thinking')}<h2>${explanations[step]}</h2>${step >= 2 ? '<p>縦 ＝ 半径</p>' : ''}${step >= 3 ? '<p>横 ＝ 円周÷2 ＝ 半径×3.14</p>' : ''}${step >= 4 ? '<div class="feedback success"><strong>半径 × 半径 × 3.14</strong></div>' : ''}<div class="actions"><button class="btn btn-secondary" data-prev ${step === 0 ? 'disabled' : ''}>戻る</button><button class="btn btn-primary" data-next ${step === 4 ? 'disabled' : ''}>次へ</button></div></section></div></div>`;
     app.querySelectorAll('[data-slices]').forEach(button => {
       button.onclick = () => { slices = Number(button.dataset.slices); drawCircle(); };
