@@ -1,4 +1,4 @@
-import { circleUnfoldingSvg, unfoldingDuration } from '../diagrams/rearrangedSlices.js?v=20260827-7';
+import { circleUnfoldingSvg, unfoldingDuration } from '../diagrams/rearrangedSlices.js?v=20260827-8';
 import { awardPiece } from '../services/islandService.js';
 import { toast } from '../components/toast.js';
 import { naviGuide } from '../components/naviGuide.js';
