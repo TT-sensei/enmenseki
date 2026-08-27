@@ -12,10 +12,6 @@
   .page{padding:24px 16px 54px}
   .header-inner{padding-inline:16px}
   .adventure-grid{grid-template-columns:repeat(2,1fr)}
-  .island-hero{min-height:400px;padding:24px}
-  .island-map{inset:auto 2% 4% 27%;height:57%}
-  .island-buildings{inset:54% 4% 8% 30%}
-  .building-shape{width:58px;height:58px}
 }
 @media(max-width:560px){
   .page{padding:20px 13px 48px}
@@ -35,7 +31,6 @@
 }
 @media (orientation:landscape) and (max-height:720px) and (min-width:700px){
   .page{padding-top:20px;padding-bottom:36px}
-  .island-hero{min-height:300px;padding:26px}
   .game-stage{min-height:350px}
   .game-stage svg{max-height:350px}
 }
