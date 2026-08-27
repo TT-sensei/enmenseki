@@ -1,84 +1,121 @@
-import { sectorPath } from '../diagrams/sector.js';
-import { rearrangedGuidePath, rearrangedSlicePath } from '../diagrams/rearrangedSlices.js';
+import { circleUnfoldingSvg, unfoldingDuration } from '../diagrams/rearrangedSlices.js?v=20260827-7';
 import { awardPiece } from '../services/islandService.js';
 import { toast } from '../components/toast.js';
 import { naviGuide } from '../components/naviGuide.js';
 
-function pizzaSvg(slices, moved, revealed) {
-  const cx = 135, cy = 150, radius = 104, angle = 360 / slices;
-  const pieces = Array.from({ length: slices }, (_, index) => {
-    const isMoved = index < moved;
-    return `<path class="pizza-piece ${isMoved ? 'moved' : ''}" data-pizza-piece="${index}" tabindex="${isMoved ? '-1' : '0'}" role="button" aria-label="ピザの${index + 1}切れ目" d="${sectorPath(cx, cy, radius, angle)}" transform="rotate(${index * angle} ${cx} ${cy})" fill="${index % 2 ? '#f7b17e' : '#ffd28f'}" stroke="#fff" stroke-width="2"/>`;
-  }).join('');
-  const teeth = slices / 2;
-  const width = 250 / teeth;
-  const arranged = Array.from({ length: moved }, (_, index) => {
-    const column = Math.floor(index / 2), top = index % 2 === 0;
-    const x = 345 + column * width;
-    // 弧を外側に残し、中心側を少しずらして平行四辺形に近づける。
-    const d = rearrangedSlicePath({ x, width, topY: 76, centerY: 154, bottomY: 232, top });
-    return `<path class="arranged-piece" d="${d}" fill="${index % 2 ? '#f7b17e' : '#ffd28f'}" stroke="#fff" stroke-width="2"/>`;
-  }).join('');
-  const guide = rearrangedGuidePath({ x: 340, width: 260, topY: 76, bottomY: 232 });
-  return `<svg viewBox="0 0 640 310" role="img" aria-label="${slices}切れのピザを、弧を上下にして交互に並べ、平行四辺形に近づける図"><g>${pieces}<circle cx="${cx}" cy="${cy}" r="5" fill="#17324d"/><text x="135" y="286" text-anchor="middle" font-size="18">のこり ${slices - moved}切れ</text></g><path d="M255 150 H315" stroke="#e96524" stroke-width="4"/><path d="M305 140 L318 150 L305 160" fill="none" stroke="#e96524" stroke-width="4"/>${arranged}<g opacity="${revealed ? 1 : .18}"><path d="${guide}" fill="none" stroke="#17324d" stroke-width="2" stroke-dasharray="6 6"/><line x1="348" y1="154" x2="608" y2="154" stroke="#17324d" stroke-width="1" stroke-dasharray="3 5"/><text x="478" y="278" text-anchor="middle" font-size="18">よこ＝円周の半分</text><text x="324" y="154" text-anchor="middle" transform="rotate(-90 324 154)" font-size="18">たて＝半径</text></g></svg>`;
+const reducedMotion = () =>
+  document.documentElement.dataset.motion === 'reduced' ||
+  matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function pizzaSvg(slices, phase) {
+  const state = phase === 'ready' ? 'circle' : phase === 'animating' ? 'animate' : 'arranged';
+  return circleUnfoldingSvg({
+    slices,
+    state,
+    showMeasures: phase === 'done',
+    sourceX: 145,
+    sourceY: 142,
+    targetX: 365,
+    targetY: 70,
+    radius: 92,
+    idPrefix: `pizza-${slices}`
+  });
 }
 
 export function pizzaFactoryView() {
   const app = document.querySelector('#app');
-  const rounds = [8, 16, 32];
+  const rounds = [12, 18, 36];
   let round = 0;
-  let moved = 0;
-  let phase = 'move';
-  let message = 'ピザを1切れずつタップして、右へならべよう。';
+  let phase = 'ready';
+  let message = '円を同じ大きさに分けました。「並べてみる」を押そう。';
   let messageKind = '';
+  let animationTimer;
+
+  function startAnimation() {
+    clearTimeout(animationTimer);
+    messageKind = '';
+    if (reducedMotion()) {
+      phase = 'guess';
+      message = '上下交互に並びました。全体は何の形に見える？';
+      draw();
+      return;
+    }
+    phase = 'animating';
+    message = 'おうぎ形が、上向き・下向きに交互に動いています。';
+    draw();
+    animationTimer = setTimeout(() => {
+      if (location.hash === '#play/pizza' && phase === 'animating') {
+        phase = 'guess';
+        message = '全部並びました。全体は何の形に見える？';
+        draw();
+      }
+    }, (unfoldingDuration(rounds[round]) + .16) * 1000);
+  }
 
   function draw() {
     const slices = rounds[round];
-    app.innerHTML = `<div class="page play-shell"><div class="mission-banner"><div><strong>ピザこうじょう</strong><p>ミッション ${round + 1}/3　${slices}切れのピザ</p></div><a class="btn btn-secondary" href="#home">島へ戻る</a></div>
-      <div class="play-board"><section class="game-stage">${pizzaSvg(slices, moved, phase === 'done')}</section><aside class="panel game-panel"><p class="eyebrow">${phase === 'move' ? 'さわって動かす' : phase === 'guess' ? '見た形を当てる' : 'ひみつ発見！'}</p><h1>${phase === 'move' ? 'ピザをならべよう' : phase === 'guess' ? '何の形に見える？' : '平行四辺形に近づいた！'}</h1><div class="piece-counter">${moved}/${slices} 切れ</div><div class="game-message ${messageKind}">${message}</div>${naviGuide(phase === 'move' ? '上と下をそろえていくと、形が見えてくるよ。' : phase === 'guess' ? 'ギザギザの外側を、少し遠くから見てみよう。' : '切れ目を細かくすると、もっと平行四辺形に近づくね。')}
-      ${phase === 'guess' ? `<div class="choice-list">${['さんかく','平行四辺形','台形'].map(choice => `<button class="choice game-choice" data-shape="${choice}">${choice}</button>`).join('')}</div>` : ''}
-      ${phase === 'done' ? `<div class="feedback success"><p><strong>たては半径</strong></p><p><strong>よこは円周の半分</strong></p><p>切れ目を細かくすると、もっと平行四辺形に近づくよ。</p></div><span class="reward-pop">◔ まるのかけらを1こゲット！</span><button class="btn btn-primary" data-next>${round === rounds.length - 1 ? '島へ戻る' : 'もっと細かく切る'}</button>` : ''}
-      ${phase === 'move' ? `${slices > 8 && moved >= 4 ? '<button class="btn btn-secondary" data-auto>のこりは自動でならべる</button>' : ''}<p class="small-note">式の計算はまだしません。形の変化をよく見よう。</p>` : ''}</aside></div></div>`;
+    const heading = phase === 'ready'
+      ? '円を並べかえてみよう'
+      : phase === 'animating'
+        ? '一切れずつ動いているよ'
+        : phase === 'guess'
+          ? '何の形に見える？'
+          : '平行四辺形のような形になった！';
+    const eyebrow = phase === 'ready'
+      ? '分けて見る'
+      : phase === 'animating'
+        ? '動きを見る'
+        : phase === 'guess'
+          ? '形を見つける'
+          : 'ひみつ発見！';
+    const guide = phase === 'ready'
+      ? '一切れずつは、おうぎ形になっているね。'
+      : phase === 'animating'
+        ? '弧が上・下・上・下と交互になるところを見よう。'
+        : phase === 'guess'
+          ? '上下のでこぼこを、少し遠くから見てみよう。'
+          : '細かく分けるほど、でこぼこと端の傾きが小さくなるよ。';
+
+    app.innerHTML = `<div class="page play-shell"><div class="mission-banner"><div><strong>ピザこうじょう</strong><p>ミッション ${round + 1}/3　${slices}等分した円</p></div><a class="btn btn-secondary" href="#home">ホームへ戻る</a></div>
+      <div class="play-board"><section class="game-stage">${pizzaSvg(slices, phase)}</section><aside class="panel game-panel"><p class="eyebrow">${eyebrow}</p><h1>${heading}</h1><div class="piece-counter">${slices}等分</div><div class="game-message ${messageKind}">${message}</div>${naviGuide(guide)}
+      ${phase === 'ready' ? '<button class="btn btn-primary" data-start>並べてみる</button><p class="small-note">式の計算はまだしません。扇形の動きだけを見よう。</p>' : ''}
+      ${phase === 'animating' ? '<button class="btn btn-primary" disabled>並べかえ中…</button>' : ''}
+      ${phase === 'guess' ? `<div class="choice-list">${['三角形','平行四辺形','円'].map(choice => `<button class="choice game-choice" data-shape="${choice}">${choice}</button>`).join('')}</div>` : ''}
+      ${phase === 'done' ? `<div class="feedback success"><p><strong>たては半径</strong></p><p><strong>よこは円周の半分</strong></p><p>細かく分けるほど、長方形に近い平行四辺形として考えられます。</p></div><span class="reward-pop">◔ まるのかけらを1こゲット！</span><button class="btn btn-primary" data-next>${round === rounds.length - 1 ? 'ホームへ戻る' : 'もっと細かく分ける'}</button>` : ''}
+      </aside></div></div>`;
     bind();
   }
 
-  function movePiece() {
-    if (phase !== 'move') return;
-    moved++;
-    if (moved >= rounds[round]) {
-      phase = 'guess';
-      message = 'ギザギザしているけれど、だんだん何の形に見えてきた？';
-    }
-    draw();
-  }
-
   function bind() {
-    app.querySelectorAll('[data-pizza-piece]').forEach(piece => {
-      piece.onclick = movePiece;
-      piece.onkeydown = event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); movePiece(); } };
-    });
+    app.querySelector('[data-start]')?.addEventListener('click', startAnimation);
     app.querySelectorAll('[data-shape]').forEach(button => {
       button.onclick = () => {
         if (button.dataset.shape === '平行四辺形') {
           phase = 'done';
           messageKind = 'good';
-          message = 'その通り！ ギザギザが小さくなるほど平行四辺形に近づくね。';
+          message = 'その通り！ 扇形がかみ合って、平行四辺形のような形になったね。';
           awardPiece('pizza');
           toast('まるのかけらをゲット！');
         } else {
           messageKind = 'oops';
-          message = 'おしい！ 上と下のでこぼこを、少し遠くから見てみよう。';
+          message = 'おしい！ 左右の端が同じ向きに傾いていることに注目しよう。';
         }
         draw();
       };
     });
-    app.querySelector('[data-auto]')?.addEventListener('click', () => {
-      moved = rounds[round]; phase = 'guess'; message = '全部ならんだ！ だんだん何の形に見えてきた？'; draw();
-    });
     app.querySelector('[data-next]')?.addEventListener('click', () => {
-      if (round === rounds.length - 1) { location.hash = '#home'; return; }
-      round++; moved = 0; phase = 'move'; messageKind = ''; message = '今度はもっと細かいピザ。1切れずつ右へならべよう。'; draw();
+      clearTimeout(animationTimer);
+      if (round === rounds.length - 1) {
+        location.hash = '#home';
+        return;
+      }
+      round++;
+      phase = 'ready';
+      messageKind = '';
+      message = '今度はもっと細かく分けた円です。形の違いを比べよう。';
+      draw();
     });
   }
+
   draw();
 }
