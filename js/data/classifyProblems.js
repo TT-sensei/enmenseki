@@ -1,1 +1,0 @@
-import{compositeProblems}from'./compositeProblems.js';import{sectorProblems}from'./sectorProblems.js';export const classifyProblems=[...sectorProblems.slice(10,15),...compositeProblems.slice(0,5),...compositeProblems.slice(10,15)];
